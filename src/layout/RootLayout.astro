@@ -1,0 +1,25 @@
+---
+import "../../src/global.css";
+
+const { title } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- displays site properly based on user's device -->
+
+		<link rel="icon" type="image/png" sizes="32x32" href="images/mainLogo.png" />
+
+		<title>{title}</title>
+		<meta
+			name="description"
+			content="We specialize in creating effective digital solutions that help businesses thrive."
+		/>
+	</head>
+	<!-- slot change your page component -->
+	<slot />
+
+
+</html>

@@ -26,6 +26,7 @@ dist/
 build/
 out/
 *.map
+.astro/
 
 # Static site build directories
 public/
@@ -41,7 +42,7 @@ public/
 *.tsbuildinfo
 
 # IDE specific files
-.vscode/
+# .vscode/
 .idea/
 *.swp
 *.swo
