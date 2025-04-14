@@ -93,4 +93,21 @@ import RootLayout from "../layout/RootLayout.astro";
 			</div>
 		</section>
 	</main>
+	<script>
+		let currentLocation = null;
+		navigator.geolocation.getCurrentPosition(
+			(pos) => {
+				currentLocation = {
+					latitude: pos.coords.latitude,
+					longitude: pos.coords.longitude,
+				};
+			},
+			() => {
+				currentLocation = {
+					latitude: 49.2827,
+					longitude: -123.1207,
+				};
+			},
+		);
+	</script>
 </RootLayout>
