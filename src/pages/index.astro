@@ -1,7 +1,96 @@
 ---
+import FavoriteCitySelect from "../components/FavoriteCitySelect.astro";
+import Search from "../components/Search.astro";
 import RootLayout from "../layout/RootLayout.astro";
 ---
 
 <RootLayout title="Weather APP">
-	<h1 class="text-xl font-bold">Weather App</h1>
+	<header class="mb-10 flex items-center justify-between">
+		<h1 class="text-xl font-bold">Weather App</h1>
+	</header>
+	<main>
+		<div class="flex justify-between">
+			<FavoriteCitySelect />
+			<Search />
+		</div>
+		<div class="mb-12 text-center">
+			<h2 class="text-6xl font-semibold text-white">16°C</h2>
+			<p class="mt-2 text-lg text-white">Sunday, April 13, 2025</p>
+		</div>
+		<section class="mb-8">
+			Daily Forecast
+			<div class="flex flex-wrap justify-around gap-4">
+				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="font-semibold">Mon</h3>
+					<span class="text-2xl">:sunny:</span>
+					<p>20°C</p>
+				</div>
+				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="font-semibold">Tue</h3>
+					<span class="text-2xl">:sunny:</span>
+					<p>20°C</p>
+				</div>
+				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="font-semibold">Wed</h3>
+					<span class="text-2xl">:sunny:</span>
+					<p>20°C</p>
+				</div>
+				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="font-semibold">Thu</h3>
+					<span class="text-2xl">:sunny:</span>
+					<p>20°C</p>
+				</div>
+				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="font-semibold">Fri</h3>
+					<span class="text-2xl">:sunny:</span>
+					<p>20°C</p>
+				</div>
+			</div>
+		</section>
+		<section>
+			Hourly Forecast
+			<div class="flex flex-wrap justify-around gap-4">
+				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<p class="font-semibold">03:00</p>
+					<span class="text-xl">:crescent_moon:</span>
+					<p class="mt-1">15°C</p>
+				</div>
+				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<p class="font-semibold">06:00</p>
+					<span class="text-xl">:crescent_moon:</span>
+					<p class="mt-1">15°C</p>
+				</div>
+				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<p class="font-semibold">09:00</p>
+					<span class="text-xl">:crescent_moon:</span>
+					<p class="mt-1">15°C</p>
+				</div>
+				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<p class="font-semibold">12:00</p>
+					<span class="text-xl">:crescent_moon:</span>
+					<p class="mt-1">15°C</p>
+				</div>
+				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<p class="font-semibold">15:00</p>
+					<span class="text-xl">:crescent_moon:</span>
+					<p class="mt-1">15°C</p>
+				</div>
+				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<p class="font-semibold">18:00</p>
+					<span class="text-xl">:crescent_moon:</span>
+					<p class="mt-1">15°C</p>
+				</div>
+				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<p class="font-semibold">21:00</p>
+					<span class="text-xl">:crescent_moon:</span>
+					<p class="mt-1">15°C</p>
+				</div>
+				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<p class="font-semibold">00:00</p>
+					<span class="text-xl">:crescent_moon:</span>
+					<p class="mt-1">15°C</p>
+				</div>
+			</div>
+		</section>
+	</main>
 </RootLayout>
