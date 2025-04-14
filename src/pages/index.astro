@@ -98,15 +98,16 @@ import RootLayout from "../layout/RootLayout.astro";
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
 				currentLocation = {
-					latitude : pos.coords.latitude,
-					longitude : pos.coords.longitude
+					latitude: pos.coords.latitude,
+					longitude: pos.coords.longitude,
 				};
-			}, 
+			},
 			() => {
 				currentLocation = {
-					latitude : 49.2827,
-					longitude : -123.1207
+					latitude: 49.2827,
+					longitude: -123.1207,
 				};
-			});
+			},
+		);
 	</script>
 </RootLayout>
