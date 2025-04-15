@@ -50,45 +50,61 @@ import RootLayout from "../layout/RootLayout.astro";
 		<section>
 			Hourly Forecast
 			<div class="flex flex-wrap justify-around gap-4" id="hourly_weather">
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">03:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">06:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">09:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">12:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">15:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">18:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">21:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">00:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
 			</div>
 		</section>
@@ -158,7 +174,7 @@ import RootLayout from "../layout/RootLayout.astro";
 					if (dayCards[index]) {
 						const weekday = new Date(dayData.day).toLocaleString("en-US", { weekday: "short" });
 						const icon = getWeatherDescription(dayData.weekCode).image;
-						const temp = `${dayData.tempMax}°C / ${dayData.tempMin}°C`;
+						const temp = `${dayData.tempMin}°C / ${dayData.tempMax}°C`;
 
 						dayCards[index].querySelector(".day-name").textContent = weekday;
 						dayCards[index].querySelector(".day-icon").textContent = icon;
@@ -177,6 +193,18 @@ import RootLayout from "../layout/RootLayout.astro";
 
 				const selectedDayHourly = hourlyData.filter((data) => data.date === currentDate && data.hour % 3 === 0);
 				console.log(selectedDayHourly);
+
+				const hourlyCards = document.querySelectorAll(".hourly-card");
+
+				hourlyData.forEach((hourlyData, index) => {
+					if (hourlyCards[index]) {
+						const icon = getWeatherDescription(hourlyData.weatherCode).image;
+						const temp = `${hourlyData.temperature}°C`;
+
+						hourlyCards[index].querySelector(".hourly-icon").textContent = icon;
+						hourlyCards[index].querySelector(".temperature").textContent = temp;
+					}
+				});
 			} else {
 				alert("Failed to fetch weather data");
 			}
