@@ -94,20 +94,80 @@ import RootLayout from "../layout/RootLayout.astro";
 		</section>
 	</main>
 	<script>
-		let currentLocation = null;
+		let currentLocation = {
+			latitude: "49.2827",
+			longitude: "-123.1207",
+		};
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
 				currentLocation = {
-					latitude: pos.coords.latitude,
-					longitude: pos.coords.longitude,
+					latitude: String(pos.coords.latitude),
+					longitude: String(pos.coords.longitude),
 				};
 			},
-			() => {
-				currentLocation = {
-					latitude: 49.2827,
-					longitude: -123.1207,
-				};
+			(_err) => {
+				alert("failed to get the current position");
 			},
 		);
+
+		const hourly = "temperature_2m,precipitation_probability,weather_code";
+		const forecast_days = "5";
+		const current = "temperature_2m,is_day,precipitation,weather_code,apparent_temperature";
+		const daily = "weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset";
+		const meteoUrl = "https://api.open-meteo.com/v1/forecast";
+		const params = { ...currentLocation, current, daily, hourly, forecast_days };
+		const urlSearchParams = new URLSearchParams(params);
+		const url = `${meteoUrl}?${urlSearchParams}`;
+
+		const fetchWeatherData = async () => {
+			const response = await fetch(url);
+			if (response.ok) {
+				const fetchData = await response.json();
+				/**
+				 * Current Result Example
+				 * interval: 900
+				 * is_day: 1
+				 * precipitation: 0
+				 * temperature_2m: 13
+				 * time: "2025-04-14T22:15"
+				 * weather_code: 3
+				 */
+				const currentWeather = fetchData.current;
+				console.log(currentWeather);
+
+				const fiveDays = fetchData.daily.time;
+				const fiveDaysTempMax = fetchData.daily.temperature_2m_max;
+				const fiveDaysTempMin = fetchData.daily.temperature_2m_min;
+				const fiveWeatherCode = fetchData.daily.weather_code;
+				const fiveDaysWeather = fiveDays.map((f, index) => {
+					return {
+						day: f,
+						tempMax: fiveDaysTempMax[index],
+						tempMin: fiveDaysTempMin[index],
+						weekCode: fiveWeatherCode[index],
+					};
+				});
+				console.log(fiveDaysWeather);
+
+				const selectedDate = "2025-04-15"; // ユーザー選択日
+				const hourlyData = fetchData.hourly.time.map((time, index) => ({
+					time,
+					date: time.split("T")[0],
+					hour: Number(time.split("T")[1].split(":")[0]),
+					temperature: fetchData.hourly.temperature_2m[index],
+					precipitationProbability: fetchData.hourly.precipitation_probability[index],
+					weatherCode: fetchData.hourly.weather_code[index],
+				}));
+
+				const selectedDayHourly = hourlyData.filter((data) => data.date === selectedDate && data.hour % 3 === 0);
+				console.log(selectedDayHourly);
+			} else {
+				alert("Failed to fetch weather data");
+			}
+		};
+
+		document.addEventListener("DOMContentLoaded", async function () {
+			await fetchWeatherData();
+		});
 	</script>
 </RootLayout>
