@@ -31,4 +31,4 @@ const weatherCodeMap = {
 
 export const getWeatherDescription = (code) => {
 	return weatherCodeMap[code] || "Unknown weather";
-}
+};
