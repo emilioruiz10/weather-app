@@ -94,6 +94,8 @@ import RootLayout from "../layout/RootLayout.astro";
 		</section>
 	</main>
 	<script>
+		import { formatDateToYYYYMMDD } from "../utils/date";
+
 		let currentLocation = {
 			latitude: "49.2827",
 			longitude: "-123.1207",
@@ -132,7 +134,7 @@ import RootLayout from "../layout/RootLayout.astro";
 				 * time: "2025-04-14T22:15"
 				 * weather_code: 3
 				 */
-				const currentWeather = fetchData.current;
+				const currentWeather = { ...fetchData.current, ...currentLocation };
 				console.log(currentWeather);
 
 				const fiveDays = fetchData.daily.time;
@@ -149,7 +151,7 @@ import RootLayout from "../layout/RootLayout.astro";
 				});
 				console.log(fiveDaysWeather);
 
-				const selectedDate = "2025-04-15"; // ユーザー選択日
+				const currentDate = formatDateToYYYYMMDD(new Date());
 				const hourlyData = fetchData.hourly.time.map((time, index) => ({
 					time,
 					date: time.split("T")[0],
@@ -159,7 +161,7 @@ import RootLayout from "../layout/RootLayout.astro";
 					weatherCode: fetchData.hourly.weather_code[index],
 				}));
 
-				const selectedDayHourly = hourlyData.filter((data) => data.date === selectedDate && data.hour % 3 === 0);
+				const selectedDayHourly = hourlyData.filter((data) => data.date === currentDate && data.hour % 3 === 0);
 				console.log(selectedDayHourly);
 			} else {
 				alert("Failed to fetch weather data");
