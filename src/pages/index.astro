@@ -19,37 +19,37 @@ import RootLayout from "../layout/RootLayout.astro";
 		</div>
 		<section class="mb-8">
 			Daily Forecast
-			<div class="flex flex-wrap justify-around gap-4">
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Mon</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+			<div class="flex flex-wrap justify-around gap-4" id="daily_weather">
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Tue</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Wed</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Thu</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Fri</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
 			</div>
 		</section>
 		<section>
 			Hourly Forecast
-			<div class="flex flex-wrap justify-around gap-4">
+			<div class="flex flex-wrap justify-around gap-4" id="hourly_weather">
 				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
 					<p class="font-semibold">03:00</p>
 					<span class="text-xl">:crescent_moon:</span>
@@ -94,6 +94,7 @@ import RootLayout from "../layout/RootLayout.astro";
 		</section>
 	</main>
 	<script>
+		import { getWeatherDescription } from "../utils/convertWeatherCode";
 		import { formatDateToYYYYMMDD } from "../utils/date";
 
 		let currentLocation = {
@@ -151,6 +152,19 @@ import RootLayout from "../layout/RootLayout.astro";
 				});
 				console.log(fiveDaysWeather);
 
+				const dayCards = document.querySelectorAll(".day-card");
+
+				fiveDaysWeather.forEach((dayData, index) => {
+					if (dayCards[index]) {
+						const weekday = new Date(dayData.day).toLocaleString("en-US", { weekday: "short" });
+						const icon = getWeatherDescription(dayData.weekCode).image;
+						const temp = `${dayData.tempMax}°C / ${dayData.tempMin}°C`;
+
+						dayCards[index].querySelector(".day-name").textContent = weekday;
+						dayCards[index].querySelector(".day-icon").textContent = icon;
+						dayCards[index].querySelector(".temp-range").textContent = temp;
+					}
+				});
 				const currentDate = formatDateToYYYYMMDD(new Date());
 				const hourlyData = fetchData.hourly.time.map((time, index) => ({
 					time,
