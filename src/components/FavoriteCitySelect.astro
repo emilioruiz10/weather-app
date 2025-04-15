@@ -1,1 +1,81 @@
-<div>Create Favorite City Select Component Here</div>
+---
+const favouriteCities = ["Vancouver", "Toronto", "Calgary"];
+const defaultLabel = "Favourite Cities";
+---
+
+<div class="relative inline-block text-left">
+	<button
+		id="menu-button"
+		type="button"
+		class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none"
+	>
+		<span>{defaultLabel}</span>
+		<svg
+			class="-mr-1 ml-2 h-5 w-5"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 20 20"
+			fill="currentColor"
+			aria-hidden="true"
+		>
+			<path
+				fill-rule="evenodd"
+				d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 011.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+				clip-rule="evenodd"></path>
+		</svg>
+	</button>
+
+	<div
+		id="dropdown-menu"
+		class="ring-opacity-5 absolute left-0 z-50 mt-2 hidden w-48 origin-top-left rounded-md bg-white shadow ring-1 ring-black focus:outline-none"
+		role="menu"
+		aria-orientation="vertical"
+		aria-labelledby="menu-button"
+		tabindex="-1"
+	>
+		<div class="py-1" role="none">
+			{
+				favouriteCities.map((city) => (
+					<a
+						href="#"
+						class="city-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+						role="menuitem"
+						tabindex="-1"
+					>
+						{city}
+					</a>
+				))
+			}
+		</div>
+	</div>
+</div>
+
+<script client:load>
+	const menuButton = document.getElementById("menu-button");
+	const dropdownMenu = document.getElementById("dropdown-menu");
+	const buttonLabel = menuButton.querySelector("span");
+
+	function toggleMenu() {
+		dropdownMenu.classList.toggle("hidden");
+	}
+
+	menuButton.addEventListener("click", (event) => {
+		event.stopPropagation();
+		toggleMenu();
+	});
+
+	const cityLinks = dropdownMenu.querySelectorAll(".city-link");
+	cityLinks.forEach((link) => {
+		link.addEventListener("click", (event) => {
+			event.preventDefault();
+			buttonLabel.textContent = link.textContent;
+			dropdownMenu.classList.add("hidden");
+		});
+	});
+
+	document.addEventListener("click", (event) => {
+		const isClickInside = menuButton.contains(event.target) || dropdownMenu.contains(event.target);
+		if (!isClickInside) {
+			dropdownMenu.classList.add("hidden");
+		}
+	});
+</script>
