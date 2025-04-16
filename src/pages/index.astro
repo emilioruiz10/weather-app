@@ -14,13 +14,13 @@ import RootLayout from "../layout/RootLayout.astro";
 			<Search />
 		</div>
 		<div
-			class="relative mx-auto mb-12 flex w-[300px] flex-col rounded-[15px] border border-white/20 bg-gray-500/30 text-center text-white shadow-[0_5px_15px_rgba(0,0,0,0.35)] backdrop-blur-md"
+			class="relative mx-auto mt-12 mb-12 flex w-[300px] flex-col gap-y-2 rounded-[15px] border border-white/20 bg-gray-500/30 text-center text-white shadow-[0_5px_15px_rgba(0,0,0,0.35)] backdrop-blur-md"
 		>
 			<h2 id="c-city" class="mt-3 text-4xl font-semibold text-white">City</h2>
-			<div class="absolute top-1 right-3 text-3xl">★</div>
-			<div class="flex flex-col justify-center">
-				<div class="mx-auto max-w-md">
-					<img class="h-30 w-30 object-cover" id="weather-icon" src="" alt="weather icon" />
+			<div class="top-s1 absolute right-3 text-3xl">★</div>
+			<div class="flex flex-col justify-center gap-y-2">
+				<div class="mx-auto h-30 w-30 max-w-md">
+					<img class="h-full w-full object-cover" id="weather-icon" src="" alt="weather icon" />
 				</div>
 				<span id="c-weather" class="text-2xl font-semibold text-white">---</span>
 				<span id="c-temp" class="text-5xl font-semibold text-white">--°C</span>
