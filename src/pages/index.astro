@@ -13,96 +13,116 @@ import RootLayout from "../layout/RootLayout.astro";
 			<FavoriteCitySelect />
 			<Search />
 		</div>
-		<div class="relative w-[300px] mx-auto flex flex-col mb-12 text-center rounded-[15px] bg-gray-500/30 backdrop-blur-md border border-white/20 shadow-[0_5px_15px_rgba(0,0,0,0.35)] text-white">
+		<div
+			class="relative mx-auto mb-12 flex w-[300px] flex-col rounded-[15px] border border-white/20 bg-gray-500/30 text-center text-white shadow-[0_5px_15px_rgba(0,0,0,0.35)] backdrop-blur-md"
+		>
 			<h2 id="c-city" class="mt-3 text-4xl font-semibold text-white">City</h2>
-			<div class="absolute right-3 top-1 text-3xl">★</div>
+			<div class="absolute top-1 right-3 text-3xl">★</div>
 			<div class="flex flex-col justify-center">
-				<div class="max-w-md mx-auto">
-					<img class="w-30 h-30 object-cover" id="weather-icon" src="" alt="weather icon">
+				<div class="mx-auto max-w-md">
+					<img class="h-30 w-30 object-cover" id="weather-icon" src="" alt="weather icon" />
 				</div>
 				<span id="c-weather" class="text-2xl font-semibold text-white">---</span>
 				<span id="c-temp" class="text-5xl font-semibold text-white">--°C</span>
 			</div>
-			<span id="c-date" class="mt-2 text-lg text-white mb-3">Weekday, Month DD, YYYY</span>
+			<span id="c-date" class="mt-2 mb-3 text-lg text-white">Weekday, Month DD, YYYY</span>
 		</div>
 		<div class="mb-8">
 			Daily Forecast
-			<div class="flex flex-wrap justify-around gap-4">
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Mon</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+			<div class="flex flex-wrap justify-around gap-4" id="daily_weather">
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Tue</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Wed</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Thu</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
-				<div class="w-28 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="font-semibold">Fri</h3>
-					<span class="text-2xl">:sunny:</span>
-					<p>20°C</p>
+				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+					<h3 class="day-name font-semibold"></h3>
+					<span class="day-icon mt-1 text-4xl"></span>
+					<p class="temp-range"></p>
 				</div>
 			</div>
 		</div>
 		<section>
 			Hourly Forecast
-			<div class="flex flex-wrap justify-around gap-4">
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+			<div class="flex flex-wrap justify-around gap-4" id="hourly_weather">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">03:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">06:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">09:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">12:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">15:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">18:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">21:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
-				<div class="min-w-[100px] rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
+				<div
+					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
+				>
 					<p class="font-semibold">00:00</p>
-					<span class="text-xl">:crescent_moon:</span>
-					<p class="mt-1">15°C</p>
+					<span class="hourly-icon text-2x1 mt-1"></span>
+					<p class="temperature"></p>
 				</div>
 			</div>
 		</section>
 	</main>
 	<script>
-		import {getWeatherDescription} from '../utils/convertWeatherCode'
+		import { getWeatherDescription } from "../utils/convertWeatherCode";
+		import { formatDateToYYYYMMDD } from "../utils/date";
+
 		let currentLocation = {
 			latitude: "49.2827",
 			longitude: "-123.1207",
@@ -129,15 +149,19 @@ import RootLayout from "../layout/RootLayout.astro";
 		const url = `${meteoUrl}?${urlSearchParams}`;
 
 		const fetchCurrentCity = async () => {
-			const response = await fetch(`https://api.radar.io/v1/geocode/reverse?coordinates=${currentLocation.latitude},${currentLocation.longitude}`, {
-  				headers: {
-    				Authorization: "prj_live_pk_2fb2c81cb7c057cb30ce030dbd1f7a3b105179f9"
- 			 }});
+			const response = await fetch(
+				`https://api.radar.io/v1/geocode/reverse?coordinates=${currentLocation.latitude},${currentLocation.longitude}`,
+				{
+					headers: {
+						Authorization: "prj_live_pk_2fb2c81cb7c057cb30ce030dbd1f7a3b105179f9",
+					},
+				},
+			);
 			const locationData = await response.json();
 			const currentCity = locationData.addresses[0].city;
 
 			return currentCity;
-		}
+		};
 
 		const fetchWeatherData = async () => {
 			const response = await fetch(url);
@@ -152,7 +176,7 @@ import RootLayout from "../layout/RootLayout.astro";
 				 * time: "2025-04-14T22:15"
 				 * weather_code: 3
 				 */
-				const currentWeather = fetchData.current;
+				const currentWeather = { ...fetchData.current, ...currentLocation };
 				console.log(currentWeather);
 
 				document.body.style.backgroundImage = `url('${getWeatherDescription(currentWeather.weather_code).background}')`;
@@ -161,7 +185,7 @@ import RootLayout from "../layout/RootLayout.astro";
 				document.body.style.backgroundPosition = "center";
 
 				const temp = currentWeather.temperature_2m;
-				document.getElementById("c-temp").textContent = temp !== undefined? `${temp}℃` : "--℃";
+				document.getElementById("c-temp").textContent = temp !== undefined ? `${temp}℃` : "--℃";
 
 				document.getElementById("c-city").textContent = await fetchCurrentCity();
 				document.getElementById("weather-icon").src = getWeatherDescription(currentWeather.weather_code).image;
@@ -169,11 +193,11 @@ import RootLayout from "../layout/RootLayout.astro";
 
 				const today = new Date();
 				const formattedDate = today.toLocaleDateString("en-US", {
-					weekday : "long",
-					year : "numeric",
-					month : "long",
-					day : "numeric"
-				})
+					weekday: "long",
+					year: "numeric",
+					month: "long",
+					day: "numeric",
+				});
 
 				document.getElementById("c-date").textContent = formattedDate;
 
@@ -191,7 +215,20 @@ import RootLayout from "../layout/RootLayout.astro";
 				});
 				console.log(fiveDaysWeather);
 
-				const selectedDate = "2025-04-15"; // ユーザー選択日
+				const dayCards = document.querySelectorAll(".day-card");
+
+				fiveDaysWeather.forEach((dayData, index) => {
+					if (dayCards[index]) {
+						const weekday = new Date(dayData.day).toLocaleString("en-US", { weekday: "short" });
+						const icon = getWeatherDescription(dayData.weekCode).image;
+						const temp = `${dayData.tempMin}°C / ${dayData.tempMax}°C`;
+
+						dayCards[index].querySelector(".day-name").textContent = weekday;
+						dayCards[index].querySelector(".day-icon").textContent = icon;
+						dayCards[index].querySelector(".temp-range").textContent = temp;
+					}
+				});
+				const currentDate = formatDateToYYYYMMDD(new Date());
 				const hourlyData = fetchData.hourly.time.map((time, index) => ({
 					time,
 					date: time.split("T")[0],
@@ -201,8 +238,20 @@ import RootLayout from "../layout/RootLayout.astro";
 					weatherCode: fetchData.hourly.weather_code[index],
 				}));
 
-				const selectedDayHourly = hourlyData.filter((data) => data.date === selectedDate && data.hour % 3 === 0);
+				const selectedDayHourly = hourlyData.filter((data) => data.date === currentDate && data.hour % 3 === 0);
 				console.log(selectedDayHourly);
+
+				const hourlyCards = document.querySelectorAll(".hourly-card");
+
+				hourlyData.forEach((hourlyData, index) => {
+					if (hourlyCards[index]) {
+						const icon = getWeatherDescription(hourlyData.weatherCode).image;
+						const temp = `${hourlyData.temperature}°C`;
+
+						hourlyCards[index].querySelector(".hourly-icon").textContent = icon;
+						hourlyCards[index].querySelector(".temperature").textContent = temp;
+					}
+				});
 			} else {
 				alert("Failed to fetch weather data");
 			}
