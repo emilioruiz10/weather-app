@@ -13,110 +13,18 @@ import RootLayout from "../layout/RootLayout.astro";
 			<FavoriteCitySelect />
 			<Search />
 		</div>
-		<div
-			class="relative mx-auto mb-12 flex w-[300px] flex-col rounded-[15px] border border-white/20 bg-gray-500/30 text-center text-white shadow-[0_5px_15px_rgba(0,0,0,0.35)] backdrop-blur-md"
+		<section
+			id="current"
+			class="relative mx-auto mb-12 flex w-[300px] max-w-xs flex-col space-y-4 rounded-2xl border border-white/20 bg-gray-500/30 p-6 text-center text-white shadow-lg backdrop-blur-md"
 		>
-			<h2 id="c-city" class="mt-3 text-4xl font-semibold text-white">City</h2>
-			<div class="absolute top-1 right-3 text-3xl">★</div>
-			<div class="flex flex-col justify-center">
-				<div class="mx-auto max-w-md">
-					<img class="h-30 w-30 object-cover" id="weather-icon" src="" alt="weather icon" />
-				</div>
-				<span id="c-weather" class="text-2xl font-semibold text-white">---</span>
-				<span id="c-temp" class="text-5xl font-semibold text-white">--°C</span>
-			</div>
-			<span id="c-date" class="mt-2 mb-3 text-lg text-white">Weekday, Month DD, YYYY</span>
-		</div>
-		<div class="mb-8">
-			Daily Forecast
-			<div class="flex flex-wrap justify-around gap-4" id="daily_weather">
-				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="day-name font-semibold"></h3>
-					<span class="day-icon mt-1 text-4xl"></span>
-					<p class="temp-range"></p>
-				</div>
-				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="day-name font-semibold"></h3>
-					<span class="day-icon mt-1 text-4xl"></span>
-					<p class="temp-range"></p>
-				</div>
-				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="day-name font-semibold"></h3>
-					<span class="day-icon mt-1 text-4xl"></span>
-					<p class="temp-range"></p>
-				</div>
-				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="day-name font-semibold"></h3>
-					<span class="day-icon mt-1 text-4xl"></span>
-					<p class="temp-range"></p>
-				</div>
-				<div class="day-card flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md">
-					<h3 class="day-name font-semibold"></h3>
-					<span class="day-icon mt-1 text-4xl"></span>
-					<p class="temp-range"></p>
-				</div>
-			</div>
-		</div>
+		</section>
+		<section class="mb-8">
+			<h2>Daily Forecast</h2>
+			<div id="five-days" class="flex flex-wrap justify-around gap-4"></div>
+		</section>
 		<section>
-			Hourly Forecast
-			<div class="flex flex-wrap justify-around gap-4" id="hourly_weather">
-				<div
-					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
-				>
-					<p class="font-semibold">03:00</p>
-					<span class="hourly-icon text-2x1 mt-1"></span>
-					<p class="temperature"></p>
-				</div>
-				<div
-					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
-				>
-					<p class="font-semibold">06:00</p>
-					<span class="hourly-icon text-2x1 mt-1"></span>
-					<p class="temperature"></p>
-				</div>
-				<div
-					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
-				>
-					<p class="font-semibold">09:00</p>
-					<span class="hourly-icon text-2x1 mt-1"></span>
-					<p class="temperature"></p>
-				</div>
-				<div
-					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
-				>
-					<p class="font-semibold">12:00</p>
-					<span class="hourly-icon text-2x1 mt-1"></span>
-					<p class="temperature"></p>
-				</div>
-				<div
-					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
-				>
-					<p class="font-semibold">15:00</p>
-					<span class="hourly-icon text-2x1 mt-1"></span>
-					<p class="temperature"></p>
-				</div>
-				<div
-					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
-				>
-					<p class="font-semibold">18:00</p>
-					<span class="hourly-icon text-2x1 mt-1"></span>
-					<p class="temperature"></p>
-				</div>
-				<div
-					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
-				>
-					<p class="font-semibold">21:00</p>
-					<span class="hourly-icon text-2x1 mt-1"></span>
-					<p class="temperature"></p>
-				</div>
-				<div
-					class="hourly-card flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md"
-				>
-					<p class="font-semibold">00:00</p>
-					<span class="hourly-icon text-2x1 mt-1"></span>
-					<p class="temperature"></p>
-				</div>
-			</div>
+			<h2>Hourly Forecast</h2>
+			<div id="every-three-hours" class="flex flex-wrap justify-between"></div>
 		</section>
 	</main>
 	<script>
@@ -144,23 +52,23 @@ import RootLayout from "../layout/RootLayout.astro";
 		const current = "temperature_2m,is_day,precipitation,weather_code,apparent_temperature";
 		const daily = "weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset";
 		const meteoUrl = "https://api.open-meteo.com/v1/forecast";
+		const currentContainer = document.getElementById("current");
+		const fiveDaysContainer = document.getElementById("five-days");
+		const everyThreeHoursContainer = document.getElementById("every-three-hours");
 
-		const fetchCurrentCity = async () => {
-			const response = await fetch(
-				`https://api.radar.io/v1/geocode/reverse?coordinates=${currentLocation.latitude},${currentLocation.longitude}`,
-				{
-					headers: {
-						Authorization: "prj_live_pk_2fb2c81cb7c057cb30ce030dbd1f7a3b105179f9",
-					},
+		const fetchCurrentCity = async (latitude, longitude) => {
+			const response = await fetch(`https://api.radar.io/v1/geocode/reverse?coordinates=${latitude},${longitude}`, {
+				headers: {
+					Authorization: "prj_live_pk_2fb2c81cb7c057cb30ce030dbd1f7a3b105179f9",
 				},
-			);
+			});
 			const locationData = await response.json();
 			const currentCity = locationData.addresses[0].city;
 
 			return currentCity;
 		};
 
-		const fetchWeatherData = async (url) => {
+		const fetchWeatherData = async (url, latitude, longitude) => {
 			const response = await fetch(url);
 			if (response.ok) {
 				const fetchData = await response.json();
@@ -174,17 +82,13 @@ import RootLayout from "../layout/RootLayout.astro";
 				 * weather_code: 3
 				 */
 				const currentWeather = { ...fetchData.current, ...currentLocation };
-				console.log(currentWeather);
 
 				document.body.style.backgroundImage = `url('${getWeatherDescription(currentWeather.weather_code).background}')`;
 
 				const temp = currentWeather.temperature_2m;
-				document.getElementById("c-temp").textContent = temp ? `${temp}℃` : "--℃";
 
-				document.getElementById("c-city").textContent = await fetchCurrentCity();
-				document.getElementById("weather-icon").src = getWeatherDescription(currentWeather.weather_code).image;
-				document.getElementById("c-weather").textContent = getWeatherDescription(currentWeather.weather_code).name;
-
+				const locationName = await fetchCurrentCity(latitude, longitude);
+				const image = getWeatherDescription(currentWeather.weather_code);
 				const today = new Date();
 				const formattedDate = today.toLocaleDateString("en-US", {
 					weekday: "long",
@@ -193,7 +97,22 @@ import RootLayout from "../layout/RootLayout.astro";
 					day: "numeric",
 				});
 
-				document.getElementById("c-date").textContent = formattedDate;
+				currentContainer.innerHTML = `
+						<div class="flex justify-between items-center text-xl font-bold">
+							<h2 class="text-2xl">${locationName}</h2>
+							<button class="text-2xl hover:scale-110 transition-transform">★</button>
+						</div>
+
+						<div class="flex justify-center">
+							<img src="${image.image}" alt="${image.name}" class="size-20" />
+						</div>
+
+						<span class="text-center text-lg font-semibold">${image.name}</span>
+
+						<span class="text-center text-4xl font-bold">${temp}°C</span>
+
+						<span class="text-center text-sm opacity-80">${formattedDate}</span>
+				`;
 
 				const fiveDays = fetchData.daily.time;
 				const fiveDaysTempMax = fetchData.daily.temperature_2m_max;
@@ -207,21 +126,23 @@ import RootLayout from "../layout/RootLayout.astro";
 						weekCode: fiveWeatherCode[index],
 					};
 				});
-				console.log(fiveDaysWeather);
 
-				const dayCards = document.querySelectorAll(".day-card");
+				fiveDaysContainer.innerHTML = `
+					${fiveDaysWeather.map((w) => {
+						const weekday = new Date(w.day).toLocaleString("en-US", { weekday: "short" });
+						const img = getWeatherDescription(w.weekCode);
+						const temp = `${w.tempMin}°C / ${w.tempMax}°C`;
 
-				fiveDaysWeather.forEach((dayData, index) => {
-					if (dayCards[index]) {
-						const weekday = new Date(dayData.day).toLocaleString("en-US", { weekday: "short" });
-						const icon = getWeatherDescription(dayData.weekCode).image;
-						const temp = `${dayData.tempMin}°C / ${dayData.tempMax}°C`;
+						return `
+							<div key={${w.day}} class="flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md items-center">
+								<h3 class="font-semibold">${weekday}</h3>
+								<img src="${img.image}" alt="${img.name}" class="size-8" />
+								<p>${temp}</p>
+							</div>
+						`;
+					})}
+				`;
 
-						dayCards[index].querySelector(".day-name").textContent = weekday;
-						dayCards[index].querySelector(".day-icon").textContent = icon;
-						dayCards[index].querySelector(".temp-range").textContent = temp;
-					}
-				});
 				const currentDate = formatDateToYYYYMMDD(new Date());
 				const hourlyData = fetchData.hourly.time.map((time, index) => ({
 					time,
@@ -233,19 +154,20 @@ import RootLayout from "../layout/RootLayout.astro";
 				}));
 
 				const selectedDayHourly = hourlyData.filter((data) => data.date === currentDate && data.hour % 3 === 0);
-				console.log(selectedDayHourly);
 
-				const hourlyCards = document.querySelectorAll(".hourly-card");
+				everyThreeHoursContainer.innerHTML = `
+					${selectedDayHourly.map((w) => {
+						const img = getWeatherDescription(w.weatherCode);
 
-				hourlyData.forEach((hourlyData, index) => {
-					if (hourlyCards[index]) {
-						const icon = getWeatherDescription(hourlyData.weatherCode).image;
-						const temp = `${hourlyData.temperature}°C`;
-
-						hourlyCards[index].querySelector(".hourly-icon").textContent = icon;
-						hourlyCards[index].querySelector(".temperature").textContent = temp;
-					}
-				});
+						return `
+							<div key={${w.hour}} class="flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center items-center shadow backdrop-blur-md">
+								<h3 class="font-semibold">${w.hour}</h3>
+								<img src="${img.image}" alt="${img.name}" class="size-8" />
+								<p class="temperature">${w.temperature}</p>
+							</div>
+						`;
+					})}
+				`;
 			} else {
 				alert("Failed to fetch weather data");
 			}
@@ -255,7 +177,7 @@ import RootLayout from "../layout/RootLayout.astro";
 			const params = { ...currentLocation, current, daily, hourly, forecast_days };
 			const urlSearchParams = new URLSearchParams(params);
 			const url = `${meteoUrl}?${urlSearchParams}`;
-			await fetchWeatherData(url);
+			await fetchWeatherData(url, currentLocation.latitude, currentLocation.longitude);
 		});
 
 		document.addEventListener("locationSelected", async (e) => {
@@ -268,7 +190,7 @@ import RootLayout from "../layout/RootLayout.astro";
 			const urlSearchParams = new URLSearchParams(params);
 			const url = `${meteoUrl}?${urlSearchParams}`;
 
-			await fetchWeatherData(url);
+			await fetchWeatherData(url, currentLocation.latitude, currentLocation.longitude);
 		});
 	</script>
 </RootLayout>
