@@ -144,9 +144,6 @@ import RootLayout from "../layout/RootLayout.astro";
 		const current = "temperature_2m,is_day,precipitation,weather_code,apparent_temperature";
 		const daily = "weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset";
 		const meteoUrl = "https://api.open-meteo.com/v1/forecast";
-		const params = { ...currentLocation, current, daily, hourly, forecast_days };
-		const urlSearchParams = new URLSearchParams(params);
-		const url = `${meteoUrl}?${urlSearchParams}`;
 
 		const fetchCurrentCity = async () => {
 			const response = await fetch(
@@ -163,7 +160,7 @@ import RootLayout from "../layout/RootLayout.astro";
 			return currentCity;
 		};
 
-		const fetchWeatherData = async () => {
+		const fetchWeatherData = async (url) => {
 			const response = await fetch(url);
 			if (response.ok) {
 				const fetchData = await response.json();
@@ -255,7 +252,23 @@ import RootLayout from "../layout/RootLayout.astro";
 		};
 
 		document.addEventListener("DOMContentLoaded", async function () {
-			await fetchWeatherData();
+			const params = { ...currentLocation, current, daily, hourly, forecast_days };
+			const urlSearchParams = new URLSearchParams(params);
+			const url = `${meteoUrl}?${urlSearchParams}`;
+			await fetchWeatherData(url);
+		});
+
+		document.addEventListener("locationSelected", async (e) => {
+			const detail = e.detail;
+
+			const lat = detail.lat;
+			const lng = detail.lng;
+			currentLocation = { latitude: lat, longitude: lng };
+			const params = { ...currentLocation, current, daily, hourly, forecast_days };
+			const urlSearchParams = new URLSearchParams(params);
+			const url = `${meteoUrl}?${urlSearchParams}`;
+
+			await fetchWeatherData(url);
 		});
 	</script>
 </RootLayout>
