@@ -180,12 +180,9 @@ import RootLayout from "../layout/RootLayout.astro";
 				console.log(currentWeather);
 
 				document.body.style.backgroundImage = `url('${getWeatherDescription(currentWeather.weather_code).background}')`;
-				document.body.style.backgroundRepeat = "no-repeat";
-				document.body.style.backgroundSize = "cover";
-				document.body.style.backgroundPosition = "center";
 
 				const temp = currentWeather.temperature_2m;
-				document.getElementById("c-temp").textContent = temp !== undefined ? `${temp}℃` : "--℃";
+				document.getElementById("c-temp").textContent = temp ? `${temp}℃` : "--℃";
 
 				document.getElementById("c-city").textContent = await fetchCurrentCity();
 				document.getElementById("weather-icon").src = getWeatherDescription(currentWeather.weather_code).image;
