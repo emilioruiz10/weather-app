@@ -5,3 +5,10 @@ export const formatDateToYYYYMMDD = (date) => {
 
 	return `${yyyy}-${mm}-${dd}`;
 };
+
+export const formatHour = (hour) => {
+	if (hour < 10) {
+		return `0${hour}:00`;
+	}
+	return `${hour}:00`;
+};

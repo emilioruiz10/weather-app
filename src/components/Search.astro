@@ -59,7 +59,7 @@
 							lng: city.longitude,
 						},
 						bubbles: true,
-					})
+					}),
 				);
 			});
 			list.appendChild(item);
@@ -70,6 +70,6 @@
 
 	searchInput.addEventListener(
 		"input",
-		debounce((e) => fetchAutoCompleteList(e.target.value), 500)
+		debounce((e) => fetchAutoCompleteList(e.target.value), 500),
 	);
 </script>
