@@ -4,6 +4,7 @@ const defaultLabel = "Favourite Cities";
 ---
 
 <div class="relative inline-block text-left">
+	<!-- Dropdown Button -->
 	<button
 		id="menu-button"
 		type="button"
@@ -24,9 +25,10 @@ const defaultLabel = "Favourite Cities";
 		</svg>
 	</button>
 
+	<!-- Dropdown Menu -->
 	<div
 		id="dropdown-menu"
-		class="ring-opacity-5 absolute left-0 z-50 mt-2 hidden w-48 origin-top-left rounded-md bg-white shadow ring-1 ring-black focus:outline-none"
+		class="ring-opacity-5 absolute top-full left-0 z-50 mt-2 hidden w-full origin-top-left rounded-md bg-transparent shadow ring-1 ring-transparent focus:outline-none md:w-48"
 		role="menu"
 		aria-orientation="vertical"
 		aria-labelledby="menu-button"
@@ -49,33 +51,40 @@ const defaultLabel = "Favourite Cities";
 	</div>
 </div>
 
+<!-- Client-side script for toggling the dropdown, updating the label,
+     and saving the selected city to local storage -->
 <script client:load>
+	// Grab DOM elements
 	const menuButton = document.getElementById("menu-button");
 	const dropdownMenu = document.getElementById("dropdown-menu");
 	const buttonLabel = menuButton.querySelector("span");
 
+	// Toggle the dropdown visibility
 	function toggleMenu() {
 		dropdownMenu.classList.toggle("hidden");
 	}
 
+	// When the button is clicked, open/close the dropdown
 	menuButton.addEventListener("click", (event) => {
 		event.stopPropagation();
 		toggleMenu();
 	});
 
+	// Add event listener for each city in the dropdown
 	const cityLinks = dropdownMenu.querySelectorAll(".city-link");
 	cityLinks.forEach((link) => {
 		link.addEventListener("click", (event) => {
 			event.preventDefault();
-			buttonLabel.textContent = link.textContent;
+			const selectedCity = link.textContent.trim();
+
+			// Update the button label
+			buttonLabel.textContent = selectedCity;
+
+			// Save the selected city to local storage
+			localStorage.setItem("selectedCity", selectedCity);
+
+			// Close the dropdown
 			dropdownMenu.classList.add("hidden");
 		});
-	});
-
-	document.addEventListener("click", (event) => {
-		const isClickInside = menuButton.contains(event.target) || dropdownMenu.contains(event.target);
-		if (!isClickInside) {
-			dropdownMenu.classList.add("hidden");
-		}
 	});
 </script>
