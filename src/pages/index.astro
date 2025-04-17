@@ -5,10 +5,13 @@ import RootLayout from "../layout/RootLayout.astro";
 ---
 
 <RootLayout title="Weather APP">
-	<header class="mb-10 flex items-center justify-between">
-		<h1 class="text-xl font-bold">Weather App</h1>
+	<header
+		id="header"
+		class="sticky top-0 z-50 flex items-center justify-between bg-white/10 px-8 py-6 transition-transform duration-300"
+	>
+		<h1 class="text-xl font-bold text-white">Weather App</h1>
 	</header>
-	<main>
+	<main class="max-w-11/12 px-20 py-6">
 		<div class="flex justify-between">
 			<FavoriteCitySelect />
 			<Search />
@@ -19,17 +22,17 @@ import RootLayout from "../layout/RootLayout.astro";
 		>
 		</section>
 		<section class="mb-8">
-			<h2>Daily Forecast</h2>
-			<div id="five-days" class="flex flex-wrap justify-around gap-4"></div>
+			<h2 class="text-xl font-bold">Daily Forecast</h2>
+			<div id="five-days" class="flex flex-wrap justify-between gap-4"></div>
 		</section>
 		<section>
-			<h2>Hourly Forecast</h2>
+			<h2 class="text-xl font-bold">Hourly Forecast</h2>
 			<div id="every-three-hours" class="flex flex-wrap justify-between"></div>
 		</section>
 	</main>
 	<script>
 		import { getWeatherDescription } from "../utils/convertWeatherCode";
-		import { formatDateToYYYYMMDD } from "../utils/date";
+		import { formatDateToYYYYMMDD, formatHour } from "../utils/date";
 
 		let currentLocation = {
 			latitude: "49.2827",
@@ -173,19 +176,21 @@ import RootLayout from "../layout/RootLayout.astro";
 				});
 
 				fiveDaysContainer.innerHTML = `
-					${fiveDaysWeather.map((w) => {
-						const weekday = new Date(w.day).toLocaleString("en-US", { weekday: "short" });
-						const img = getWeatherDescription(w.weekCode);
-						const temp = `${w.tempMin}°C / ${w.tempMax}°C`;
+					${fiveDaysWeather
+						.map((w) => {
+							const weekday = new Date(w.day).toLocaleString("en-US", { weekday: "short" });
+							const img = getWeatherDescription(w.weekCode);
+							const temp = `${w.tempMin}°C / ${w.tempMax}°C`;
 
-						return `
+							return `
 							<div key={${w.day}} class="flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md items-center">
 								<h3 class="font-semibold">${weekday}</h3>
 								<img src="${img.image}" alt="${img.name}" class="size-8" />
 								<p>${temp}</p>
 							</div>
 						`;
-					})}
+						})
+						.join("")}
 				`;
 
 				const currentDate = formatDateToYYYYMMDD(new Date());
@@ -201,17 +206,19 @@ import RootLayout from "../layout/RootLayout.astro";
 				const selectedDayHourly = hourlyData.filter((data) => data.date === currentDate && data.hour % 3 === 0);
 
 				everyThreeHoursContainer.innerHTML = `
-					${selectedDayHourly.map((w) => {
-						const img = getWeatherDescription(w.weatherCode);
+					${selectedDayHourly
+						.map((w) => {
+							const img = getWeatherDescription(w.weatherCode);
 
-						return `
-							<div key={${w.hour}} class="flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center items-center shadow backdrop-blur-md">
-								<h3 class="font-semibold">${w.hour}</h3>
+							return `
+							<div key={${formatHour(w.hour)}} class="flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center items-center shadow backdrop-blur-md">
+								<h3 class="font-semibold">${formatHour(w.hour)}</h3>
 								<img src="${img.image}" alt="${img.name}" class="size-8" />
 								<p class="temperature">${w.temperature}</p>
 							</div>
 						`;
-					})}
+						})
+						.join("")}
 				`;
 			} else {
 				alert("Failed to fetch weather data");
@@ -236,6 +243,26 @@ import RootLayout from "../layout/RootLayout.astro";
 			const url = `${meteoUrl}?${urlSearchParams}`;
 
 			await fetchWeatherData(url, currentLocation.latitude, currentLocation.longitude);
+		});
+
+		let lastScrollY = window.scrollY;
+		const header = document.getElementById("header");
+
+		window.addEventListener("scroll", () => {
+			const currentScrollY = window.scrollY;
+
+			if (currentScrollY === 0) {
+				// トップにいるとき → 表示
+				header.style.transform = "translateY(0)";
+			} else if (currentScrollY > lastScrollY) {
+				// 下にスクロール中 → 隠す
+				header.style.transform = "translateY(-100%)";
+			} else {
+				// 上にスクロール中 → 表示
+				header.style.transform = "translateY(0)";
+			}
+
+			lastScrollY = currentScrollY;
 		});
 	</script>
 </RootLayout>
