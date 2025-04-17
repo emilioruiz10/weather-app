@@ -98,9 +98,15 @@ import RootLayout from "../layout/RootLayout.astro";
 				});
 
 				currentContainer.innerHTML = `
-						<div class="text-xl font-bold">
-							<h2 class="text-3xl">${locationName}</h2>
-							<button class="text-2xl absolute top-2 right-3 hover:scale-110 transition-transform">★</button>
+						<div class="flex justify-between items-center text-xl font-bold">
+							<h2 class="text-2xl">${locationName}</h2>
+							<button 
+							class="favorite-btn text-2xl absolute top-2 right-3 hover:scale-110 transition-transform"
+							data-city= "${locationName}"
+							data-lat= "${latitude}"
+							data-lng= "${longitude}"
+							>★</button>
+              
 						</div>
 						<div class="sm:flex items-center">
 							<div class="size-30 mx-auto sm:mx-0 sm:flex-[1]">
@@ -113,6 +119,45 @@ import RootLayout from "../layout/RootLayout.astro";
 						</div>
 						<span class="text-center text-sm opacity-80 mt-2">${formattedDate}</span>
 				`;
+
+				setTimeout(() => {
+					const favoriteBtn = document.querySelector(".favorite-btn");
+
+					if (!favoriteBtn) {
+						console.error("Favorite button not found in DOM.");
+						return;
+					}
+
+					const cityName = favoriteBtn.dataset.city;
+					const lat = favoriteBtn.dataset.lat;
+					const lng = favoriteBtn.dataset.lng;
+
+					console.log("Favorite button found:", cityName, lat, lng);
+
+					const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+					const isFavorited = favorites.some((f) => f.city === cityName);
+
+					if (isFavorited) {
+						favoriteBtn.classList.add("text-yellow-400");
+					}
+
+					favoriteBtn.addEventListener("click", () => {
+						const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+						const exists = favorites.find((f) => f.city === cityName);
+
+						if (exists) {
+							const event = new CustomEvent("locationSelected", {
+								detail: { location: exists.city, lat: exists.lat, lng: exists.lng },
+								bubbles: true,
+							});
+							document.dispatchEvent(event);
+						} else {
+							favorites.push({ city: cityName, lat, lng });
+							localStorage.setItem("favorites", JSON.stringify(favorites));
+							favoriteBtn.classList.add("text-yellow-400");
+						}
+					});
+				}, 0);
 
 				const fiveDays = fetchData.daily.time;
 				const fiveDaysTempMax = fetchData.daily.temperature_2m_max;
