@@ -15,7 +15,7 @@ import RootLayout from "../layout/RootLayout.astro";
 		</div>
 		<section
 			id="current"
-			class="relative mx-auto mb-12 flex w-[300px] max-w-xs flex-col space-y-4 rounded-2xl border border-white/20 bg-gray-500/30 p-6 text-center text-white shadow-lg backdrop-blur-md"
+			class="relative mx-auto my-12 flex w-[300px] flex-col space-y-1 rounded-2xl border border-white/20 bg-gray-500/30 p-6 text-center text-white shadow-lg backdrop-blur-md sm:w-[400px]"
 		>
 		</section>
 		<section class="mb-8">
@@ -101,22 +101,23 @@ import RootLayout from "../layout/RootLayout.astro";
 						<div class="flex justify-between items-center text-xl font-bold">
 							<h2 class="text-2xl">${locationName}</h2>
 							<button 
-							class="favorite-btn text-2xl hover:scale-110 transition-transform"
+							class="favorite-btn text-2xl absolute top-2 right-3 hover:scale-110 transition-transform"
 							data-city= "${locationName}"
 							data-lat= "${latitude}"
 							data-lng= "${longitude}"
 							>★</button>
+              
 						</div>
-
-						<div class="flex justify-center">
-							<img src="${image.image}" alt="${image.name}" class="size-20" />
+						<div class="sm:flex items-center">
+							<div class="size-30 mx-auto sm:mx-0 sm:flex-[1]">
+								<img src="${image.image}" alt="${image.name}" class="size-full object-contain" />
+							</div>
+							<div class="flex flex-col sm:mx-auto sm:flex-[1]">
+								<span class="text-center text-lg sm:text-3xl font-semibold">${image.name}</span>
+								<span class="text-center text-4xl font-bold">${temp}°C</span>
+							</div>
 						</div>
-
-						<span class="text-center text-lg font-semibold">${image.name}</span>
-
-						<span class="text-center text-4xl font-bold">${temp}°C</span>
-
-						<span class="text-center text-sm opacity-80">${formattedDate}</span>
+						<span class="text-center text-sm opacity-80 mt-2">${formattedDate}</span>
 				`;
 				
 				setTimeout(() => {
