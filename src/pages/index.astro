@@ -63,7 +63,7 @@ import RootLayout from "../layout/RootLayout.astro";
 				},
 			});
 			const locationData = await response.json();
-			const currentCity = locationData.addresses[0].city;
+			const currentCity = locationData.addresses[0].city ?? locationData.addresses[0].addressLabel;
 
 			return currentCity;
 		};
