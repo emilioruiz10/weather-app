@@ -1,45 +1,48 @@
 ---
+// src/components/FavouriteCities.astro
 const favouriteCities = ["Vancouver", "Toronto", "Calgary"];
-const defaultLabel = "Favourite Cities";
+const defaultLabel = "Vancouver"; // start with a city, not generic text
 ---
 
 <div class="relative inline-block text-left">
+	<!-- Always pill‑shaped, thick black border, consistent padding/font -->
 	<button
 		id="menu-button"
 		type="button"
-		class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none"
+		class="inline-flex items-center justify-between rounded-full border-2 border-black bg-white px-6 py-2 text-lg font-medium whitespace-nowrap text-gray-900 focus:outline-none"
 	>
 		<span>{defaultLabel}</span>
 		<svg
-			class="-mr-1 ml-2 h-5 w-5"
+			class="ml-2 h-4 w-4 text-gray-900"
 			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 20 20"
 			fill="currentColor"
+			viewBox="0 0 20 20"
 			aria-hidden="true"
 		>
 			<path
 				fill-rule="evenodd"
-				d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 011.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+				d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75
+           .75 0 011.08 1.04l-4.25 4.5a.75.75 0 01-1.08
+           0l-4.25-4.5a.75.75 0 01.02-1.06z"
 				clip-rule="evenodd"></path>
 		</svg>
 	</button>
 
+	<!-- Dropdown positioned under the button, full button‑width -->
 	<div
 		id="dropdown-menu"
-		class="ring-opacity-5 absolute left-0 z-50 mt-2 hidden w-48 origin-top-left rounded-md bg-white shadow ring-1 ring-black focus:outline-none"
+		class="ring-opacity-5 absolute top-full left-0 mt-1 hidden min-w-full rounded-md bg-white shadow-lg ring-1 ring-black"
 		role="menu"
 		aria-orientation="vertical"
 		aria-labelledby="menu-button"
-		tabindex="-1"
 	>
-		<div class="py-1" role="none">
+		<div class="py-1">
 			{
 				favouriteCities.map((city) => (
 					<a
 						href="#"
-						class="city-link block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+						class="city-link block px-4 py-2 text-lg whitespace-nowrap text-gray-900 hover:bg-gray-100"
 						role="menuitem"
-						tabindex="-1"
 					>
 						{city}
 					</a>
@@ -54,28 +57,33 @@ const defaultLabel = "Favourite Cities";
 	const dropdownMenu = document.getElementById("dropdown-menu");
 	const buttonLabel = menuButton.querySelector("span");
 
-	function toggleMenu() {
-		dropdownMenu.classList.toggle("hidden");
+	// Load last saved city (if any), or default to first in list
+	const saved = localStorage.getItem("selectedCityData");
+	if (saved) {
+		try {
+			const { city } = JSON.parse(saved);
+			if (city && favouriteCities.includes(city)) {
+				buttonLabel.textContent = city;
+			}
+		} catch {}
 	}
 
-	menuButton.addEventListener("click", (event) => {
-		event.stopPropagation();
-		toggleMenu();
+	menuButton.addEventListener("click", (e) => {
+		e.stopPropagation();
+		dropdownMenu.classList.toggle("hidden");
 	});
 
-	const cityLinks = dropdownMenu.querySelectorAll(".city-link");
-	cityLinks.forEach((link) => {
-		link.addEventListener("click", (event) => {
-			event.preventDefault();
-			buttonLabel.textContent = link.textContent;
+	document.addEventListener("click", () => {
+		dropdownMenu.classList.add("hidden");
+	});
+
+	dropdownMenu.querySelectorAll(".city-link").forEach((link) => {
+		link.addEventListener("click", (e) => {
+			e.preventDefault();
+			const city = link.textContent.trim();
+			buttonLabel.textContent = city;
 			dropdownMenu.classList.add("hidden");
+			localStorage.setItem("selectedCityData", JSON.stringify({ city, selectedAt: new Date().toISOString() }));
 		});
-	});
-
-	document.addEventListener("click", (event) => {
-		const isClickInside = menuButton.contains(event.target) || dropdownMenu.contains(event.target);
-		if (!isClickInside) {
-			dropdownMenu.classList.add("hidden");
-		}
 	});
 </script>

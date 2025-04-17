@@ -3,14 +3,15 @@
 		id="search-input"
 		type="text"
 		placeholder="Search..."
-		class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+		class="w-full rounded-full border-2 border-black bg-white px-6 py-2 text-lg whitespace-nowrap placeholder-gray-600 focus:outline-none"
 	/>
 	<div
 		id="autocomplete-list"
-		class="absolute z-50 mt-1 hidden max-h-60 w-full overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg"
+		class="absolute top-full left-0 z-50 mt-1 hidden max-h-40 w-72 overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg"
 	>
 	</div>
 </div>
+
 <script>
 	const searchInput = document.getElementById("search-input");
 	const list = document.getElementById("autocomplete-list");
@@ -19,9 +20,7 @@
 		let timeoutId;
 		return function (...args) {
 			clearTimeout(timeoutId);
-			timeoutId = setTimeout(() => {
-				func.apply(this, args);
-			}, delay);
+			timeoutId = setTimeout(() => func.apply(this, args), delay);
 		};
 	};
 
@@ -29,56 +28,48 @@
 		if (!query.trim()) return;
 		const response = await fetch(`https://api.radar.io/v1/search/autocomplete?query=${query}&layers=locality&limit=5`, {
 			method: "GET",
-			headers: {
-				Authorization: import.meta.env.PUBLIC_RADAR_API_KEY,
-			},
+			headers: { Authorization: import.meta.env.PUBLIC_RADAR_API_KEY },
 		});
 
-		if (response.ok) {
-			const data = await response.json();
-			console.log(data);
-			list.innerHTML = "";
-			if (data.addresses.length === 0) {
+		if (!response.ok) {
+			console.error("Radar error:", response.statusText);
+			return;
+		}
+
+		const { addresses } = await response.json();
+		list.innerHTML = "";
+
+		if (!addresses.length) {
+			list.classList.add("hidden");
+			return;
+		}
+
+		addresses.forEach((city) => {
+			const item = document.createElement("div");
+			item.className = "px-4 py-2 cursor-pointer hover:bg-blue-100 transition-colors";
+			item.textContent = city.formattedAddress;
+			item.addEventListener("click", () => {
+				searchInput.value = city.addressLabel;
 				list.classList.add("hidden");
-				return;
-			}
-			data.addresses.forEach((city) => {
-				const item = document.createElement("div");
-				item.className = "px-4 py-2 cursor-pointer hover:bg-blue-100 transition-colors";
-				item.textContent = city.formattedAddress;
-
-				item.addEventListener("click", () => {
-					searchInput.value = city.addressLabel;
-					list.classList.add("hidden");
-
-					// ✅ 選択イベントを親に送る
-					const event = new CustomEvent("locationSelected", {
+				searchInput.dispatchEvent(
+					new CustomEvent("locationSelected", {
 						detail: {
 							location: city.formattedAddress,
 							lat: city.latitude,
 							lng: city.longitude,
 						},
 						bubbles: true,
-					});
-					searchInput.dispatchEvent(event);
-				});
-				list.appendChild(item);
+					})
+				);
 			});
-			list.classList.remove("hidden");
-		} else {
-			// Handle the error
-			console.error("Fetch error:", response.status, response.statusText);
-			alert("Failed to fetch radar data");
-		}
+			list.appendChild(item);
+		});
+
+		list.classList.remove("hidden");
 	};
 
-	const handleSearch = async (event) => {
-		const query = event.target.value;
-		await fetchAutoCompleteList(query);
-		// You can call your API here instead
-	};
-
-	// Setup debounce
-	const debouncedSearch = debounce(handleSearch, 500); // 500ms delay
-	searchInput.addEventListener("input", debouncedSearch);
+	searchInput.addEventListener(
+		"input",
+		debounce((e) => fetchAutoCompleteList(e.target.value), 500)
+	);
 </script>
