@@ -47,7 +47,7 @@ import RootLayout from "../layout/RootLayout.astro";
 			},
 			(_err) => {
 				alert("failed to get the current position");
-			},
+			}
 		);
 
 		const hourly = "temperature_2m,precipitation_probability,weather_code";
@@ -252,13 +252,13 @@ import RootLayout from "../layout/RootLayout.astro";
 			const currentScrollY = window.scrollY;
 
 			if (currentScrollY === 0) {
-				// トップにいるとき → 表示
+				// When you are in top -> show
 				header.style.transform = "translateY(0)";
 			} else if (currentScrollY > lastScrollY) {
-				// 下にスクロール中 → 隠す
+				// Scrolling down → hidden
 				header.style.transform = "translateY(-100%)";
 			} else {
-				// 上にスクロール中 → 表示
+				// Scrolling up → show
 				header.style.transform = "translateY(0)";
 			}
 
