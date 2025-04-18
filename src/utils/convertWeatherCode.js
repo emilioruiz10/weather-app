@@ -12,12 +12,12 @@ const weatherCodeMap = {
 	2: {
 		name: "Partly cloudy",
 		image: "/images/cloudy.png",
-		background: "/images/bg-cloudy.jpg",
+		background: "/images/bg-cloudy.png",
 	},
 	3: {
 		name: "Overcast",
 		image: "/images/cloudy.png",
-		background: "/images/bg-cloudy.jpg",
+		background: "/images/bg-cloudy.png",
 	},
 	45: {
 		name: "Fog",

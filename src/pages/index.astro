@@ -16,6 +16,9 @@ import RootLayout from "../layout/RootLayout.astro";
 			<FavoriteCitySelect />
 			<Search />
 		</div>
+		<div id="rainbow-message" class="hidden w-full py-4 text-center text-lg text-white">
+			A lucky moment might find you today :)
+		</div>
 		<section
 			id="current"
 			class="relative mx-auto my-12 flex w-[300px] flex-col space-y-1 rounded-2xl border border-white/20 bg-gray-500/30 p-6 text-center text-white shadow-lg backdrop-blur-md sm:w-[400px]"
@@ -85,13 +88,24 @@ import RootLayout from "../layout/RootLayout.astro";
 				 * weather_code: 3
 				 */
 				const currentWeather = { ...fetchData.current, ...currentLocation };
+				const weatherInfo = getWeatherDescription(currentWeather.weather_code);
+				const isRainy = weatherInfo.image === "/images/bg-rain.webp";
+				const rainbowChance = Math.random() < 0.001;
 
-				document.body.style.backgroundImage = `url('${getWeatherDescription(currentWeather.weather_code).background}')`;
+				if (isRainy && rainbowChance) {
+					document.body.style.backgroundImage = `url('/images/bg-rainbow.png')`;
+
+					const rainbowMessage = document.getElementById("rainbow-message");
+					if (rainbowMessage) {
+						rainbowMessage.classList.remove("hidden");
+					}
+				} else {
+					document.body.style.backgroundImage = `url('${weatherInfo.background}')`;
+				}
 
 				const temp = currentWeather.temperature_2m;
 
 				const locationName = await fetchCurrentCity(latitude, longitude);
-				const image = getWeatherDescription(currentWeather.weather_code);
 				const today = new Date();
 				const formattedDate = today.toLocaleDateString("en-US", {
 					weekday: "long",
@@ -101,10 +115,10 @@ import RootLayout from "../layout/RootLayout.astro";
 				});
 
 				currentContainer.innerHTML = `
-						<div class="flex justify-between items-center text-xl font-bold">
+						<div class="relative text-center text-xl font-bold">
 							<h2 class="text-2xl">${locationName}</h2>
 							<button 
-							class="favorite-btn text-2xl absolute top-2 right-3 hover:scale-110 transition-transform"
+							class="favorite-btn text-2xl absolute -top-2 -right-1 hover:scale-110 transition-transform"
 							data-city= "${locationName}"
 							data-lat= "${latitude}"
 							data-lng= "${longitude}"
@@ -113,10 +127,10 @@ import RootLayout from "../layout/RootLayout.astro";
 						</div>
 						<div class="sm:flex items-center">
 							<div class="size-30 mx-auto sm:mx-0 sm:flex-[1]">
-								<img src="${image.image}" alt="${image.name}" class="size-full object-contain" />
+								<img src="${weatherInfo.image}" alt="${weatherInfo.name}" class="size-full object-contain" />
 							</div>
 							<div class="flex flex-col sm:mx-auto sm:flex-[1]">
-								<span class="text-center text-lg sm:text-3xl font-semibold">${image.name}</span>
+								<span class="text-center text-lg sm:text-3xl font-semibold">${weatherInfo.name}</span>
 								<span class="text-center text-4xl font-bold">${temp}°C</span>
 							</div>
 						</div>
