@@ -85,13 +85,19 @@ import RootLayout from "../layout/RootLayout.astro";
 				 * weather_code: 3
 				 */
 				const currentWeather = { ...fetchData.current, ...currentLocation };
+				const weatherInfo = getWeatherDescription(currentWeather.weather_code);
+				const isRainy = weatherInfo.image === "/images/bg-rain.webp";
+				const rainbowChance = Math.random() < 0.001;
 
-				document.body.style.backgroundImage = `url('${getWeatherDescription(currentWeather.weather_code).background}')`;
+				if (isRainy && rainbowChance) {
+					document.body.style.backgroundImage = `url('/images/bg-rainbow.png')`;
+				} else {
+					document.body.style.backgroundImage = `url('${weatherInfo.background}')`;
+				}
 
 				const temp = currentWeather.temperature_2m;
 
 				const locationName = await fetchCurrentCity(latitude, longitude);
-				const image = getWeatherDescription(currentWeather.weather_code);
 				const today = new Date();
 				const formattedDate = today.toLocaleDateString("en-US", {
 					weekday: "long",
@@ -113,10 +119,10 @@ import RootLayout from "../layout/RootLayout.astro";
 						</div>
 						<div class="sm:flex items-center">
 							<div class="size-30 mx-auto sm:mx-0 sm:flex-[1]">
-								<img src="${image.image}" alt="${image.name}" class="size-full object-contain" />
+								<img src="${weatherInfo.image}" alt="${weatherInfo.name}" class="size-full object-contain" />
 							</div>
 							<div class="flex flex-col sm:mx-auto sm:flex-[1]">
-								<span class="text-center text-lg sm:text-3xl font-semibold">${image.name}</span>
+								<span class="text-center text-lg sm:text-3xl font-semibold">${weatherInfo.name}</span>
 								<span class="text-center text-4xl font-bold">${temp}°C</span>
 							</div>
 						</div>
