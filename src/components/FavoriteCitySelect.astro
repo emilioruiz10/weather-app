@@ -96,13 +96,8 @@ const favouriteCities = [];
 		dropdownMenu.classList.add("hidden");
 	});
 
-	const savedSelection = localStorage.getItem("selectedCityData");
-	if (savedSelection) {
-		try {
-			const { city } = JSON.parse(savedSelection);
-			if (city) buttonLabel.textContent = city;
-		} catch {}
-	}
+	buttonLabel.textContent = "Favorite Cities";
+
 
 	menuButton.addEventListener("click", (e) => {
 		e.stopPropagation();
