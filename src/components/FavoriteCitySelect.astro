@@ -1,7 +1,6 @@
 ---
 // src/components/FavouriteCities.astro
-const favouriteCities = ["Vancouver", "Toronto", "Calgary"];
-const defaultLabel = "Vancouver"; // start with a city, not generic text
+const favouriteCities = [];
 ---
 
 <div class="relative inline-block text-left">
@@ -11,7 +10,7 @@ const defaultLabel = "Vancouver"; // start with a city, not generic text
 		type="button"
 		class="inline-flex items-center justify-between rounded-full border-2 border-black bg-white px-6 py-2 text-lg font-medium whitespace-nowrap text-gray-900 focus:outline-none"
 	>
-		<span>{defaultLabel}</span>
+		<span>Favorite Cities{favouriteCities}</span>
 		<svg
 			class="ml-2 h-4 w-4 text-gray-900"
 			xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +35,7 @@ const defaultLabel = "Vancouver"; // start with a city, not generic text
 		aria-orientation="vertical"
 		aria-labelledby="menu-button"
 	>
-		<div class="py-1">
+		<div id="dropdown-cities" class="py-1">
 			{
 				favouriteCities.map((city) => (
 					<a
@@ -56,18 +55,52 @@ const defaultLabel = "Vancouver"; // start with a city, not generic text
      and saving the selected city to local storage -->
 <script client:load>
 	// Grab DOM elements
+	const dropdownCities = document.getElementById("dropdown-cities");
+	const button = document.getElementById("dropdown-button");
 	const menuButton = document.getElementById("menu-button");
 	const dropdownMenu = document.getElementById("dropdown-menu");
 	const buttonLabel = menuButton.querySelector("span");
 
-	// Load last saved city (if any), or default to first in list
-	const saved = localStorage.getItem("selectedCityData");
-	if (saved) {
+	const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+	if (favorites.length === 0) {
+	dropdownCities.innerHTML = `<span class="block px-4 py-2 text-gray-500 text-sm">No favorites yet</span>`;
+	} else {
+		dropdownCities.innerHTML = favorites
+			.map(({ city }) => `
+				<a href="#" class="city-link block px-4 py-2 text-lg whitespace-nowrap text-gray-900 hover:bg-gray-100" role="menuitem">
+					${city}
+				</a>
+			`)
+			.join("");
+	}
+
+	dropdownCities.addEventListener("click", (e) => {
+		if (!e.target.classList.contains("city-link")) return;
+		e.preventDefault();
+
+		const city = e.target.textContent.trim();
+		const fav = favorites.find((f) => f.city === city);
+
+		if (fav) {
+			buttonLabel.textContent = city;
+			localStorage.setItem("selectedCityData", JSON.stringify({ city, selectedAt: new Date().toISOString() }));
+
+			const event = new CustomEvent("locationSelected", {
+				detail: { location: fav.city, lat: fav.lat, lng: fav.lng },
+				bubbles: true,
+			});
+			document.dispatchEvent(event);
+		}
+
+		dropdownMenu.classList.add("hidden");
+	});
+
+	const savedSelection = localStorage.getItem("selectedCityData");
+	if (savedSelection) {
 		try {
-			const { city } = JSON.parse(saved);
-			if (city && favouriteCities.includes(city)) {
-				buttonLabel.textContent = city;
-			}
+			const { city } = JSON.parse(savedSelection);
+			if (city) buttonLabel.textContent = city;
 		} catch {}
 	}
 
@@ -80,13 +113,4 @@ const defaultLabel = "Vancouver"; // start with a city, not generic text
 		dropdownMenu.classList.add("hidden");
 	});
 
-	dropdownMenu.querySelectorAll(".city-link").forEach((link) => {
-		link.addEventListener("click", (e) => {
-			e.preventDefault();
-			const city = link.textContent.trim();
-			buttonLabel.textContent = city;
-			dropdownMenu.classList.add("hidden");
-			localStorage.setItem("selectedCityData", JSON.stringify({ city, selectedAt: new Date().toISOString() }));
-		});
-	});
 </script>
