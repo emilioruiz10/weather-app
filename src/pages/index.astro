@@ -114,6 +114,15 @@ import RootLayout from "../layout/RootLayout.astro";
 					day: "numeric",
 				});
 
+				let animationClass = "weather-float";
+				const weatherCode = currentWeather.weather_code;
+
+				if ([95, 96, 99].includes(weatherCode)) {
+				animationClass = "shake";
+				} else if ([71, 73, 75, 77, 85, 86].includes(weatherCode)) {
+				animationClass = "snow-spin";
+				}
+
 				currentContainer.innerHTML = `
 						<div class="relative text-center text-xl font-bold">
 							<h2 class="text-2xl">${locationName}</h2>
@@ -127,7 +136,7 @@ import RootLayout from "../layout/RootLayout.astro";
 						</div>
 						<div class="sm:flex items-center">
 							<div class="size-30 mx-auto sm:mx-0 sm:flex-[1]">
-								<img src="${weatherInfo.image}" alt="${weatherInfo.name}" class="size-full object-contain" />
+								<img src="${weatherInfo.image}" alt="${weatherInfo.name}" class="size-full object-contain ${animationClass}" />
 							</div>
 							<div class="flex flex-col sm:mx-auto sm:flex-[1]">
 								<span class="text-center text-lg sm:text-3xl font-semibold">${weatherInfo.name}</span>
