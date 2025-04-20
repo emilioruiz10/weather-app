@@ -172,6 +172,7 @@ import RootLayout from "../layout/RootLayout.astro";
 							favorites.push({ city: cityName, lat, lng });
 							localStorage.setItem("favorites", JSON.stringify(favorites));
 							favoriteBtn.classList.add("text-yellow-400");
+							window.dispatchEvent(new CustomEvent("favoriteUpdated"));
 						}
 					});
 				}, 0);
