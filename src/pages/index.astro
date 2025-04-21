@@ -33,9 +33,10 @@ import RootLayout from "../layout/RootLayout.astro";
 			<div id="every-three-hours" class="flex flex-wrap justify-between"></div>
 		</section>
 	</main>
+
 	<script>
 		import { getWeatherDescription } from "../utils/convertWeatherCode";
-		import { formatDateToYYYYMMDD, formatHour } from "../utils/date";
+		import { formatDateToMMDD, formatDateToYYYYMMDD, formatHour } from "../utils/date";
 
 		let currentLocation = {
 			latitude: "49.2827",
@@ -61,6 +62,8 @@ import RootLayout from "../layout/RootLayout.astro";
 		const currentContainer = document.getElementById("current");
 		const fiveDaysContainer = document.getElementById("five-days");
 		const everyThreeHoursContainer = document.getElementById("every-three-hours");
+		let fiveDaysWeather = [];
+		let hourlyData = [];
 
 		const fetchCurrentCity = async (latitude, longitude) => {
 			const response = await fetch(`https://api.radar.io/v1/geocode/reverse?coordinates=${latitude},${longitude}`, {
@@ -72,6 +75,28 @@ import RootLayout from "../layout/RootLayout.astro";
 			const currentCity = locationData.addresses[0].city ?? locationData.addresses[0].addressLabel;
 
 			return currentCity;
+		};
+
+		const weatherDataForThreeHours = (date) => {
+			console.log("three");
+			const currentDate = formatDateToYYYYMMDD(new Date(date));
+			const selectedDayHourly = hourlyData.filter((data) => data.date === currentDate && data.hour % 3 === 0);
+
+			everyThreeHoursContainer.innerHTML = `
+					${selectedDayHourly
+						.map((w) => {
+							const img = getWeatherDescription(w.weatherCode);
+
+							return `
+							<div key={${formatHour(w.hour)}} class="flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center items-center shadow backdrop-blur-md">
+								<h3 class="font-semibold">${formatHour(w.hour)}</h3>
+								<img src="${img.image}" alt="${img.name}" class="size-8" />
+								<p class="temperature">${w.temperature}</p>
+							</div>
+						`;
+						})
+						.join("")}
+				`;
 		};
 
 		const fetchWeatherData = async (url, latitude, longitude) => {
@@ -91,6 +116,14 @@ import RootLayout from "../layout/RootLayout.astro";
 				const weatherInfo = getWeatherDescription(currentWeather.weather_code);
 				const isRainy = weatherInfo.image === "/images/bg-rain.webp";
 				const rainbowChance = Math.random() < 0.001;
+				hourlyData = fetchData.hourly.time.map((time, index) => ({
+					time,
+					date: time.split("T")[0],
+					hour: Number(time.split("T")[1].split(":")[0]),
+					temperature: fetchData.hourly.temperature_2m[index],
+					precipitationProbability: fetchData.hourly.precipitation_probability[index],
+					weatherCode: fetchData.hourly.weather_code[index],
+				}));
 
 				if (isRainy && rainbowChance) {
 					document.body.style.backgroundImage = `url('/images/bg-rainbow.png')`;
@@ -172,17 +205,15 @@ import RootLayout from "../layout/RootLayout.astro";
 						const exists = favorites.find((f) => f.city === cityName);
 
 						if (exists) {
-							const event = new CustomEvent("locationSelected", {
-								detail: { location: exists.city, lat: exists.lat, lng: exists.lng },
-								bubbles: true,
-							});
-							document.dispatchEvent(event);
+							favorites.splice(favorites.indexOf(exists), 1);
+							localStorage.setItem("favorites", JSON.stringify(favorites));
+							favoriteBtn.classList.remove("text-yellow-400");
 						} else {
 							favorites.push({ city: cityName, lat, lng });
 							localStorage.setItem("favorites", JSON.stringify(favorites));
 							favoriteBtn.classList.add("text-yellow-400");
-							window.dispatchEvent(new CustomEvent("favoriteUpdated"));
 						}
+						window.dispatchEvent(new CustomEvent("favoriteUpdated"));
 					});
 				}, 0);
 
@@ -190,7 +221,7 @@ import RootLayout from "../layout/RootLayout.astro";
 				const fiveDaysTempMax = fetchData.daily.temperature_2m_max;
 				const fiveDaysTempMin = fetchData.daily.temperature_2m_min;
 				const fiveWeatherCode = fetchData.daily.weather_code;
-				const fiveDaysWeather = fiveDays.map((f, index) => {
+				fiveDaysWeather = fiveDays.map((f, index) => {
 					return {
 						day: f,
 						tempMax: fiveDaysTempMax[index],
@@ -202,48 +233,29 @@ import RootLayout from "../layout/RootLayout.astro";
 				fiveDaysContainer.innerHTML = `
 					${fiveDaysWeather
 						.map((w) => {
-							const weekday = new Date(w.day).toLocaleString("en-US", { weekday: "short" });
 							const img = getWeatherDescription(w.weekCode);
 							const temp = `${w.tempMin}°C / ${w.tempMax}°C`;
 
 							return `
-							<div key={${w.day}} class="flex w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md items-center">
-								<h3 class="font-semibold">${weekday}</h3>
+							<button id="five-days-button" type="button" data-day=${w.day} key=${w.day} class="flex cursor-pointer w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md items-center">
+								<h3 class="font-semibold">${formatDateToMMDD(new Date(w.day))}</h3>
 								<img src="${img.image}" alt="${img.name}" class="size-8" />
 								<p>${temp}</p>
-							</div>
+							</button>
 						`;
 						})
 						.join("")}
 				`;
 
-				const currentDate = formatDateToYYYYMMDD(new Date());
-				const hourlyData = fetchData.hourly.time.map((time, index) => ({
-					time,
-					date: time.split("T")[0],
-					hour: Number(time.split("T")[1].split(":")[0]),
-					temperature: fetchData.hourly.temperature_2m[index],
-					precipitationProbability: fetchData.hourly.precipitation_probability[index],
-					weatherCode: fetchData.hourly.weather_code[index],
-				}));
+				// クリックイベント
+				fiveDaysContainer.querySelectorAll("#five-days-button").forEach((btn) => {
+					btn.addEventListener("click", (e) => {
+						const selected = e.currentTarget.getAttribute("data-day");
+						weatherDataForThreeHours(selected);
+					});
+				});
 
-				const selectedDayHourly = hourlyData.filter((data) => data.date === currentDate && data.hour % 3 === 0);
-
-				everyThreeHoursContainer.innerHTML = `
-					${selectedDayHourly
-						.map((w) => {
-							const img = getWeatherDescription(w.weatherCode);
-
-							return `
-							<div key={${formatHour(w.hour)}} class="flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center items-center shadow backdrop-blur-md">
-								<h3 class="font-semibold">${formatHour(w.hour)}</h3>
-								<img src="${img.image}" alt="${img.name}" class="size-8" />
-								<p class="temperature">${w.temperature}</p>
-							</div>
-						`;
-						})
-						.join("")}
-				`;
+				weatherDataForThreeHours(new Date());
 			} else {
 				alert("Failed to fetch weather data");
 			}
