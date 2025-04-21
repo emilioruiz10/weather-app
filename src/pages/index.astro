@@ -11,7 +11,7 @@ import RootLayout from "../layout/RootLayout.astro";
 	>
 		<h1 class="text-xl font-bold text-white">Weather App</h1>
 	</header>
-	<main class="max-w-11/12 px-20 py-6">
+	<main class="mx-auto max-w-11/12 px-20 py-6">
 		<div class="flex justify-between">
 			<FavoriteCitySelect />
 			<Search />
@@ -25,12 +25,20 @@ import RootLayout from "../layout/RootLayout.astro";
 		>
 		</section>
 		<section class="mb-8">
-			<h2 class="text-xl font-bold">Daily Forecast</h2>
-			<div id="five-days" class="flex flex-wrap justify-between gap-4"></div>
+			<h2 class="mb-2 text-xl font-bold text-white">Daily Forecast</h2>
+			<div
+				id="five-days"
+				class="flex flex-wrap justify-between gap-4 rounded-lg border border-gray-200 bg-gray-50/30 p-4"
+			>
+			</div>
 		</section>
-		<section>
-			<h2 class="text-xl font-bold">Hourly Forecast</h2>
-			<div id="every-three-hours" class="flex flex-wrap justify-between"></div>
+		<section class="mb-8">
+			<h2 class="mb-2 text-xl font-bold text-white">Hourly Forecast</h2>
+			<div
+				id="every-three-hours"
+				class="flex flex-wrap justify-between rounded-lg border border-gray-200 bg-gray-50/30 p-4"
+			>
+			</div>
 		</section>
 	</main>
 
@@ -78,7 +86,6 @@ import RootLayout from "../layout/RootLayout.astro";
 		};
 
 		const weatherDataForThreeHours = (date) => {
-			console.log("three");
 			const currentDate = formatDateToYYYYMMDD(new Date(date));
 			const selectedDayHourly = hourlyData.filter((data) => data.date === currentDate && data.hour % 3 === 0);
 
@@ -237,7 +244,13 @@ import RootLayout from "../layout/RootLayout.astro";
 							const temp = `${w.tempMin}°C / ${w.tempMax}°C`;
 
 							return `
-							<button id="five-days-button" type="button" data-day=${w.day} key=${w.day} class="flex cursor-pointer w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center shadow backdrop-blur-md items-center">
+							<button
+								id="five-days-button" 
+								type="button" 
+								data-day=${w.day + "T00:00"} 
+								key=${w.day} 
+								class="relative flex cursor-pointer w-40 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center backdrop-blur-md items-center transition-all duration-300 transform shadow hover:-translate-y-1 hover:scale-105 hover:shadow-lg"
+							>
 								<h3 class="font-semibold">${formatDateToMMDD(new Date(w.day))}</h3>
 								<img src="${img.image}" alt="${img.name}" class="size-8" />
 								<p>${temp}</p>
@@ -255,7 +268,7 @@ import RootLayout from "../layout/RootLayout.astro";
 					});
 				});
 
-				weatherDataForThreeHours(new Date());
+				weatherDataForThreeHours(currentWeather.time);
 			} else {
 				alert("Failed to fetch weather data");
 			}
