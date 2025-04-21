@@ -118,9 +118,9 @@ import RootLayout from "../layout/RootLayout.astro";
 				const weatherCode = currentWeather.weather_code;
 
 				if ([95, 96, 99].includes(weatherCode)) {
-				animationClass = "shake";
+					animationClass = "shake";
 				} else if ([71, 73, 75, 77, 85, 86].includes(weatherCode)) {
-				animationClass = "snow-spin";
+					animationClass = "snow-spin";
 				}
 
 				currentContainer.innerHTML = `
