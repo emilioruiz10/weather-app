@@ -98,7 +98,7 @@ import RootLayout from "../layout/RootLayout.astro";
 							<div key={${formatHour(w.hour)}} class="flex w-30 flex-col gap-2 rounded-xl bg-white/50 p-4 text-center items-center shadow backdrop-blur-md">
 								<h3 class="font-semibold">${formatHour(w.hour)}</h3>
 								<img src="${img.image}" alt="${img.name}" class="size-8" />
-								<p class="temperature">${w.temperature}</p>
+								<p class="temperature">${w.temperature}°C</p>
 							</div>
 						`;
 						})
